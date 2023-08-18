@@ -1,0 +1,21 @@
+
+###> symfony/framework-bundle ###
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+/mysql-data/
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+# User-specific stuff:
+/.idea/php.xml
+/.idea/sirhplus-v2.iml
+
+/**/.idea/*

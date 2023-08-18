@@ -1,0 +1,7 @@
+parameters:
+    maitre_url: '%env(MAITREDATA_URL)%'
+    client_id: '%env(MAITREDATA_CLIENT_ID)%'
+    client_secret: '%env(MAITREDATA_CLIENT_SECRET)%'
+    username: '%env(MAITREDATA_USERNAME)%'
+    password: '%env(MAITREDATA_PASSWORD)%'
+    scope: '%env(MAITREDATA_SCOPE)%'

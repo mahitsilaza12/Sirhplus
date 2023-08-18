@@ -1,0 +1,8 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        scalingo_app_front_url: '%env(resolve:SCALINGO_APP_FRONT_URL)%'
+        local_app_front_url: '%env(resolve:LOCAL_APP_FRONT_URL)%'
+when@test:
+    twig:
+        strict_variables: true

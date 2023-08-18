@@ -1,0 +1,33 @@
+
+#Invalider le jeton d'actualisation à la déconnexion
+#api_token_invalidate:
+#    path: /api/token/invalidate
+# config/routes.yaml
+
+#api_refresh_token:
+#    path: /api/token/refresh
+# ...
+
+controllers:
+    resource: ../src/Sirhplus/Infrastructure/Symfony6/Controller/
+    type: annotation
+    prefix: /api
+
+sirhplus.resetpassword:
+    path: /reset-password
+    methods: POST
+    defaults: { _controller: Symfony6\Controller\User\ResetPasswordController }
+
+sirhplus.sendemail.resetpassword:
+    path: /send-email/reset-password
+    methods: POST
+    defaults: { _controller: Symfony6\Controller\User\SendEmailResetPasswordController }
+
+api_login_check:
+    path: /api/login_check
+
+app.swagger_ui:
+    path: /api/docs
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+

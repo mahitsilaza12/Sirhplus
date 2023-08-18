@@ -1,0 +1,71 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+imports:
+    - { resource: packages/parameters.yaml }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+        bind:
+            $payloads:
+                - content: '%env(JWT_PASSPHRASE)%'
+                - expireIn: '%env(JWT_TOKEN_TTL)%'
+            $data:
+                - client_id: '%env(MAITREDATA_CLIENT_ID)%'
+                - client_secret: '%env(MAITREDATA_CLIENT_SECRET)%'
+                - username: '%env(MAITREDATA_USERNAME)%'
+                - password: '%env(MAITREDATA_PASSWORD)%'
+                - scope: '%env(MAITREDATA_SCOPE)%'
+            $uri: '%env(MAITREDATA_URL)%'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    # makes classes in src/ available to be  used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    Symfony6\:
+        resource: '../src/Sirhplus/Infrastructure/Symfony6/'
+        exclude: '../src/Sirhplus/Infrastructure/Symfony6/{Doctrine,Kernel.php}'
+
+    Sirhplus\Api\:
+        resource: '../src/Sirhplus/Api'
+
+    Sirhplus\Shared\:
+        resource: '../src/Sirhplus/Shared'
+
+    Symfony6\Controller\:
+        resource: '../src/Sirhplus/Infrastructure/Symfony6/Controller/*'
+        tags: ['controller.service_arguments']
+
+    sirhplus.authentication.success_handler:
+        class: Symfony6\Security\Http\Authentication\AuthenticationSuccessHandler
+        public: true
+        arguments: ['@lexik_jwt_authentication.jwt_manager', '@event_dispatcher']
+
+
+    sirhplus.request_body_converter:
+        class: Symfony6\ParamConverter\RequestBodyParamConverter
+        public: true
+        arguments: [ '@serializer' ]
+        tags:
+            - { name: request.param_converter, converter: request_body_converter }
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    app.security_expression_language_provider:
+        class: Symfony6\ExpressionLanguage\AccessExpressionLanguageProvider
+        public: true
+        tags:
+            - {name: routing.expression_language_provider}
+            - {name: security.expression_language_provider}
+
+    api.sirhplus.exception.listener:
+        class: Symfony6\EventListener\APIExceptionListener
+        public: true
+        tags:
+            -  { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

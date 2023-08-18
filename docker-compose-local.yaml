@@ -1,0 +1,47 @@
+version: '3.5'
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    networks:
+      - sirh
+    environment:
+      - WITH_XDEBUG=true
+    volumes:
+      - ./:/var/www/sirhplus:rw,cached
+
+  sirhplus:
+    container_name: sirhplus
+    networks:
+      - sirh
+    ports:
+      - "8000:443"
+    volumes:
+      - ./public:/var/www/sirhplus/public:ro
+
+  database:
+    container_name: database
+    networks:
+      - sirh
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=admin_pwd
+      - MYSQL_DATABASE=ydux7352_sirhplus
+      - MYSQL_USER=ydux7352_remi
+      - MYSQL_PASSWORD=Sternan-29290
+    ports:
+      - "3379:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  adminer:
+    container_name: adminer
+    networks:
+      - sirh
+    ports:
+      - 2021:8080
+
+
+networks:
+  sirh:
+    name: sirh

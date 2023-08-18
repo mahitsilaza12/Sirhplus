@@ -1,0 +1,28 @@
+version: "3.5"
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    depends_on:
+      - database
+
+  sirhplus:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    depends_on:
+      - php-fpm
+
+  database:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+
+  adminer:
+    image: adminer
+    depends_on:
+      - database
+    restart: always
+

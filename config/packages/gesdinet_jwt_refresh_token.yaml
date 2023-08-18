@@ -1,0 +1,22 @@
+gesdinet_jwt_refresh_token:
+    refresh_token_class: Symfony6\Entity\RefreshToken
+    ttl: 25920
+    ttl_update: true
+    firewall: api
+    token_parameter_name: refreshToken
+    return_expiration: true
+    return_expiration_parameter_name: refresh_token_expiration
+    single_use: true #Jetons à usage unique
+    cookie: #Définir le jeton d'actualisation dans un cookie
+        enabled: true
+        same_site: lax               # default value
+        path: /                      # default value
+        domain: null                 # default value
+        http_only: true              # default value
+        secure: true                 # default value
+        remove_token_from_body: true # default value
+
+    logout_firewall: myfirewall #logout
+   # manager_type: orm
+#    object_manager: my.specific.entity_manager.id  #7/oct
+    doctrine_mappings: false #Désactiver les mappages Doctrine automatiques
